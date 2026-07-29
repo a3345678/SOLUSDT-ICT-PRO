@@ -1,8 +1,32 @@
 //@version=6
+
 strategy(
-//////////////////////////////////////////////////////////////////////////////
-// GENERAL
-//////////////////////////////////////////////////////////////////////////////
+
+     title="SOLUSDT ICT PRO Strategy V1.2",
+
+     shorttitle="ICT PRO V1.2",
+
+     overlay=true,
+
+     pyramiding=0,
+
+     initial_capital=100000,
+
+     commission_type=strategy.commission.percent,
+
+     commission_value=0.05,
+
+     calc_on_every_tick=false,
+
+     process_orders_on_close=true,
+
+     max_labels_count=500,
+
+     max_lines_count=500,
+
+     max_boxes_count=500
+
+)
 
 groupGeneral = "General"
 
