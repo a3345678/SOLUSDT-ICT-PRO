@@ -1,16 +1,80 @@
 //@version=6
-strategy(
-     title="SOLUSDT ICT PRO Strategy V1",
-     shorttitle="ICT PRO V1",
-     overlay=true,
-     pyramiding=0,
-     initial_capital=100000,
-     commission_type=strategy.commission.percent,
-     commission_value=0.05,
-     calc_on_every_tick=false,
-     process_orders_on_close=true,
-     max_labels_count=500,
-     max_lines_count=500,
-     max_boxes_count=500)
+strategy(//////////////////////////////////////////////////////////////////////////////
+// GENERAL
+//////////////////////////////////////////////////////////////////////////////
+
+groupGeneral = "General"
+
+enableStrategy = input.bool(
+     true,
+     "Enable Strategy",
+     group = groupGeneral)
+
+showDebug = input.bool(
+     false,
+     "Debug Mode",
+     group = groupGeneral)
+
+//////////////////////////////////////////////////////////////////////////////
+// MODULE ENGINE
+//////////////////////////////////////////////////////////////////////////////
+
+groupModule = "Modules"
+
+useBiasEngine      = input.bool(true, "4H Bias", group=groupModule)
+useLiquidityEngine = input.bool(true, "PDH / PDL", group=groupModule)
+useCRTEngine       = input.bool(true, "CRT Sweep", group=groupModule)
+useTurtleSoup      = input.bool(true, "Turtle Soup", group=groupModule)
+useMSSEngine       = input.bool(true, "MSS", group=groupModule)
+useCISDEngine      = input.bool(true, "CISD", group=groupModule)
+useOTEEngine       = input.bool(true, "OTE", group=groupModule)
+useFVGEngine       = input.bool(true, "FVG", group=groupModule)
+useOBEngine        = input.bool(true, "Order Block", group=groupModule)
+
+//////////////////////////////////////////////////////////////////////////////
+// RISK
+//////////////////////////////////////////////////////////////////////////////
+
+groupRisk = "Risk"
+
+riskPercent = input.float(
+     1.0,
+     "Risk %",
+     minval = 0.1,
+     step = 0.1,
+     group = groupRisk)
+
+riskReward = input.float(
+     2.0,
+     "Risk : Reward",
+     minval = 1.0,
+     step = 0.5,
+     group = groupRisk)
+
+//////////////////////////////////////////////////////////////////////////////
+// ALERT
+//////////////////////////////////////////////////////////////////////////////
+
+groupAlert = "Alert"
+
+enableAlert = input.bool(
+     true,
+     "Enable Alert",
+     group = groupAlert)
+
+useWebhook = input.bool(
+     true,
+     "Webhook",
+     group = groupAlert)
+
+useTelegram = input.bool(
+     false,
+     "Telegram",
+     group = groupAlert)
+
+telegramChatID = input.string(
+     "",
+     "Telegram Chat ID",
+     group = groupAlert)
 
 plot(close, title="Close")
