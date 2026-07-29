@@ -76,5 +76,69 @@ telegramChatID = input.string(
      "",
      "Telegram Chat ID",
      group = groupAlert)
+//////////////////////////////////////////////////////////////////////////////
+// ENGINE VARIABLES
+//////////////////////////////////////////////////////////////////////////////
 
+var bool bullBias = false
+var bool bearBias = false
+
+var bool longSignal = false
+var bool shortSignal = false
+
+var float entryPrice = na
+var float stopLoss = na
+var float takeProfit = na
+
+//////////////////////////////////////////////////////////////////////////////
+// ALERT JSON
+//////////////////////////////////////////////////////////////////////////////
+
+buyMessage =
+     '{"signal":"BUY",' +
+     '"symbol":"' + syminfo.ticker + '",' +
+     '"price":"' + str.tostring(close) + '"}'
+
+sellMessage =
+     '{"signal":"SELL",' +
+     '"symbol":"' + syminfo.ticker + '",' +
+     '"price":"' + str.tostring(close) + '"}'
+
+//////////////////////////////////////////////////////////////////////////////
+// DEBUG
+//////////////////////////////////////////////////////////////////////////////
+
+plotshape(
+     showDebug and bullBias,
+     title="Bull Bias",
+     style=shape.circle,
+     location=location.belowbar,
+     color=color.green,
+     size=size.tiny)
+
+plotshape(
+     showDebug and bearBias,
+     title="Bear Bias",
+     style=shape.circle,
+     location=location.abovebar,
+     color=color.red,
+     size=size.tiny)
+
+//////////////////////////////////////////////////////////////////////////////
+// VERSION LABEL
+//////////////////////////////////////////////////////////////////////////////
+
+var label versionLabel = na
+
+if barstate.islast
+    if not na(versionLabel)
+        label.delete(versionLabel)
+
+    versionLabel := label.new(
+         bar_index,
+         high,
+         "SOLUSDT ICT PRO\nV1.2",
+         style=label.style_label_down,
+         textcolor=color.white,
+         color=color.new(color.blue, 70))
 plot(close, title="Close")
