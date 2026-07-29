@@ -167,3 +167,60 @@ if barstate.islast
          textcolor=color.white,
          color=color.new(color.blue, 70))
 plot(close, title="Close")
+//////////////////////////////////////////////////////////////////////////////
+// BIAS ENGINE
+//////////////////////////////////////////////////////////////////////////////
+
+groupBias = "4H Bias"
+
+biasTF = input.timeframe(
+     "240",
+     "Bias Timeframe",
+     group = groupBias)
+
+biasFastEMA = input.int(
+     50,
+     "Fast EMA",
+     minval = 1,
+     group = groupBias)
+
+biasSlowEMA = input.int(
+     200,
+     "Slow EMA",
+     minval = 1,
+     group = groupBias)
+biasEMA50 =
+     request.security(
+          syminfo.tickerid,
+          biasTF,
+          ta.ema(close, biasFastEMA),
+          lookahead = barmerge.lookahead_off)
+
+biasEMA200 =
+     request.security(
+          syminfo.tickerid,
+          biasTF,
+          ta.ema(close, biasSlowEMA),
+          lookahead = barmerge.lookahead_off)
+if useBiasEngine
+
+    bullBias := biasEMA50 > biasEMA200
+
+    bearBias := biasEMA50 < biasEMA200
+plot(
+     showDebug ? biasEMA50 : na,
+     title="4H EMA50",
+     color=color.lime)
+
+plot(
+     showDebug ? biasEMA200 : na,
+     title="4H EMA200",
+     color=color.orange)
+bgcolor(
+     showDebug
+     ? bullBias
+          ? color.new(color.green,92)
+          : bearBias
+               ? color.new(color.red,92)
+               : na
+     : na)
