@@ -224,3 +224,63 @@ bgcolor(
                ? color.new(color.red,92)
                : na
      : na)
+//////////////////////////////////////////////////////////////////////////////
+// LIQUIDITY ENGINE
+//////////////////////////////////////////////////////////////////////////////
+
+groupLiquidity = "Liquidity"
+
+showPDH = input.bool(true, "Show PDH", group=groupLiquidity)
+showPDL = input.bool(true, "Show PDL", group=groupLiquidity)
+
+showLiquidityDebug = input.bool(
+     false,
+     "Liquidity Debug",
+     group=groupLiquidity)
+//////////////////////////////////////////////////////////////////////////////
+// PREVIOUS DAY
+//////////////////////////////////////////////////////////////////////////////
+
+pdh =
+     request.security(
+          syminfo.tickerid,
+          "D",
+          high[1],
+          lookahead=barmerge.lookahead_off)
+
+pdl =
+     request.security(
+          syminfo.tickerid,
+          "D",
+          low[1],
+          lookahead=barmerge.lookahead_off)
+plot(
+     showPDH ? pdh : na,
+     title="PDH",
+     color=color.red,
+     linewidth=2)
+
+plot(
+     showPDL ? pdl : na,
+     title="PDL",
+     color=color.green,
+     linewidth=2)
+bullSweep =
+     low < pdl and close > pdl
+
+bearSweep =
+     high > pdh and close < pdh
+plotshape(
+     showLiquidityDebug and bullSweep,
+     title="Bull Sweep",
+     style=shape.triangleup,
+     color=color.lime,
+     location=location.belowbar)
+
+plotshape(
+     showLiquidityDebug and bearSweep,
+     title="Bear Sweep",
+     style=shape.triangledown,
+     color=color.red,
+     location=location.abovebar)
+
